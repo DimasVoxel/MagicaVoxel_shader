@@ -20,13 +20,13 @@ bool isGrowColor(vec3 v){
 }
 
 float dir() {
-	return (1 - modo*2);
+	return (1. - modo*2.);
 }
 
 //Add more randomness
 float totalMios(vec3 v) {
-	float a = 0;
-	float distance = 10;
+	float a = 0.0;
+	float distance = 10.;
 	for(float x=-distance; x<=distance;x+=1.){
 		for(float y=-distance; y<=distance;y+=1.){
 			for(float z=-distance; z<=distance;z+=1.){								
@@ -45,7 +45,7 @@ float random(vec3 v){
 }
 
 float random2(vec3 v){
-	float n = v.x*v.y*v.z + seed + 1500;
+	float n = v.x*v.y*v.z + seed + 1500.;
 	return abs(fract(sin(1./tan(n) + (totalMios(v) + seed) * 1235.342)));
 }
 
@@ -53,7 +53,7 @@ float random2(vec3 v){
 bool shouldBePlaced(vec3 v){
 	float dif = (i_color_index + colorRange - voxel(v));
 	if(isGrowColor(vec3(v.x,v.y,v.z + dir() )) && !isGrowColor(v) && random(v) < avance){
-		seed += 1;
+		seed += 1.;
 		return true;
 	}
 	return false;
@@ -62,16 +62,16 @@ bool shouldBePlaced(vec3 v){
 bool ladosParecidos(vec3 v) {
 	//Si existe una (o dos?) vecina que sea de ese color
 	int vecina = 0;
-	if (voxel(vec3(v.x+1.,v.y,v.z)) == voxel(v) + 1) {
+	if (voxel(vec3(v.x+1.,v.y,v.z)) == voxel(v) + 1.) {
 		vecina++;
 	}
-	if (voxel(vec3(v.x-1.,v.y,v.z)) == voxel(v) + 1) {
+	if (voxel(vec3(v.x-1.,v.y,v.z)) == voxel(v) + 1.) {
 		vecina++;
 	}
-	if (voxel(vec3(v.x,v.y+1.,v.z)) == voxel(v) + 1) {
+	if (voxel(vec3(v.x,v.y+1.,v.z)) == voxel(v) + 1.) {
 		vecina++;
 	}
-	if (voxel(vec3(v.x,v.y-1.,v.z)) == voxel(v) + 1) {
+	if (voxel(vec3(v.x,v.y-1.,v.z)) == voxel(v) + 1.) {
 		vecina++;
 	}
 	if (vecina>0) {
@@ -89,11 +89,11 @@ float map(vec3 v) {
 	//Si no hay nada arriba o es mayor, aumenta
 	if ( isGrowColor(v) && ladosParecidos(v) && (!isGrowColor(vec3(v.x,v.y,v.z + dir())) || voxel(v) < voxel(vec3(v.x,v.y,v.z + dir())) ) ) {
 		if (random(v) < avanceColor) {
-			return min(i_color_index + colorRange,voxel(v) + 1);
+			return min(i_color_index + colorRange,voxel(v) + 1.);
 		} else {
 			return voxel(v);
 		}
-	} else if(shouldBePlaced(v) && voxel(v)!=0 && !isGrowColor(v)){
+	} else if(shouldBePlaced(v) && voxel(v)!=0. && !isGrowColor(v)){
 		return  i_color_index;
 		//if(random(v) < avanceColor*(i_color_index + colorRange - voxel(v))) {
 		//	return min(i_color_index + colorRange,  voxel(vec3(v.x,v.y,v.z + dir() )) + 1);
